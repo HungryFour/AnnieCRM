@@ -64,6 +64,9 @@ export default {
   methods: {
     handleClick (row) {
       console.log(row)
+      this.$router.push({
+        path: `/teacher/${row.teacherID}`
+      })
     },
     onSubmit () {
       console.log('提交')
@@ -80,33 +83,38 @@ export default {
         sex: '女',
         courseCount: 10,
         courses: ['语文', '数学'],
-        mobile: '18513006017'
+        mobile: '18513006017',
+        teacherID: 10000001
       },
       {
         name: '赵大山',
         sex: '男',
         courseCount: 10,
         courses: ['英语', '思想政治课'],
-        mobile: '18512764286'
+        mobile: '18512764286',
+        teacherID: 10000002
       }, {
         name: '钱多多',
         sex: '女',
         courseCount: 9,
         courses: ['地理', '数学', '数字信号处理'],
-        mobile: '13114764516'
+        mobile: '13114764516',
+        teacherID: 10000003
 
       }, {
         name: '郭小美',
         sex: '女',
         courseCount: 6,
         courses: ['语文', '政治'],
-        mobile: '13512714526'
+        mobile: '13512714526',
+        teacherID: 10000004
       }, {
         name: '王小川',
         sex: '男',
         courseCount: 5,
         courses: ['物理', '化学'],
-        mobile: '15512214126'
+        mobile: '15512214126',
+        teacherID: 10000005
       }]
     }
   }

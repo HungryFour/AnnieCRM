@@ -7,6 +7,7 @@ import Stutent from '@/components/Student'
 import Teacher from '@/components/Teacher'
 import Setting from '@/components/Setting'
 import StudentDetail from '@/components/StudentDetail'
+import TeacherDetail from '@/components/TeacherDetail'
 
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ const router = new Router({
           path: '/teacher',
           name: 'Teacher',
           component: Teacher
+        },
+        {
+          path: '/teacher/:teacher_id',
+          name: 'TeacherDetail',
+          component: TeacherDetail
         },
         {
           path: '/setting',
