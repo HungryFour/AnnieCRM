@@ -1,6 +1,9 @@
 # AnnieCRM
 
-> A Vue.js project
+> 小型补习班CRM系统。[点击这里查看](http://crm.wjmwjmwb.com)
+> 主要实现：
+> * 学生信息管理，偏科分析，历史成绩查看，报名课程管理等
+> * 教职工信息管理，排课处理（TODO）等
 
 ## Build Setup
 
