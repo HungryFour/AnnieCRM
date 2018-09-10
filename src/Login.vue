@@ -1,6 +1,6 @@
 <template>
   <div class="login-wrap">
-    <div class="ms-title">系统</div>
+    <div class="ms-title">安妮教学管理系统</div>
     <div class="ms-login">
       <el-form
         :model="ruleForm"
@@ -28,13 +28,12 @@
           class="login-btn">
           <el-button
             type="primary"
-            @contextmenu.prevent="handleRightClick($event)"
-            @click="handleClick($event)">
+            @click="handleClick()">
             <!--@click="submitForm()">-->
             登录
           </el-button>
         </div>
-        <p style="font-size:12px;line-height:30px;color:#999;">Tips : 登录信息请联系管理员。</p>
+        <p style="font-size:12px;line-height:30px;color:#999;">Tips : 登录信息请联系系统管理员。</p>
       </el-form>
     </div>
   </div>
@@ -69,49 +68,31 @@ export default {
   },
   created () {
     console.log(143254325325)
-    this.$emit('xxx')
   },
   methods: {
-    handleRightClick (e) {
-      console.log(11111, e)
-    },
-    handleClick (e) {
-      console.log(22222, e)
+    handleClick () {
+      console.log(this.ruleForm.username, this.ruleForm.password)
+      if (this.ruleForm.username === 'admin' && this.ruleForm.password === '123321') {
+        localStorage.setItem('user', this.ruleForm.username)
+        localStorage.setItem('duration', Date.parse(new Date()))
+        this.$message({
+          type: 'success',
+          message: '登录成功',
+          duration: 2000
+        })
+        if (this.$route.query.redirect) {
+          this.$router.push({path: this.$route.query.redirect})
+        } else {
+          this.$router.push({path: '/home'})
+        }
+      } else {
+        this.$message({
+          type: 'error',
+          message: '登录失败, 请检查用户名和密码, 如果密码丢失, 请联系管理员',
+          duration: 5000
+        })
+      }
     }
-  //   submitForm () {
-  //     Api.login(this.ruleForm)
-  //       .then((res) => {
-  //         // 登录失败
-  //         if (res.data.code !== '-1') {
-  //           this.$message({
-  //             message: res.data.msg,
-  //             type: 'error'
-  //           })
-  //         } else {
-  //           // 登录成功之后本地存储token
-  //           localStorage.setItem('accessToken', res.data.access_token)
-  //           localStorage.setItem('refreshToken', res.data.refresh_token)
-  //           localStorage.setItem('userName', res.data.user_name)
-  //           // 跳转回之前路由
-  //           if (this.$route.query.redirect) {
-  //             this.$router.push({
-  //               path: this.$route.query.redirect
-  //             })
-  //           } else {
-  //             this.$router.push({
-  //               path: '/home'
-  //             })
-  //           }
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         // 异常错误
-  //         this.$message({
-  //           message: err,
-  //           type: 'error'
-  //         })
-  //       })
-  //   }
   }
 }
 </script>

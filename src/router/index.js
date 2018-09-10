@@ -5,7 +5,6 @@ import Index from '@/components/Index'
 import Home from '@/components/Home'
 import Stutent from '@/components/Student'
 import Teacher from '@/components/Teacher'
-import Setting from '@/components/Setting'
 import StudentDetail from '@/components/StudentDetail'
 import TeacherDetail from '@/components/TeacherDetail'
 
@@ -21,36 +20,49 @@ const router = new Router({
       path: '/',
       name: 'Index',
       component: Index,
+      meta: {
+        requireAuth: true
+      },
       children: [
         {
           path: '/home',
           name: 'Home',
-          component: Home
+          component: Home,
+          meta: {
+            requireAuth: true
+          }
         },
         {
           path: '/student',
           name: 'Student',
-          component: Stutent
+          component: Stutent,
+          meta: {
+            requireAuth: true
+          }
         },
         {
           path: '/student/:student_id',
           name: 'StudentDetail',
-          component: StudentDetail
+          component: StudentDetail,
+          meta: {
+            requireAuth: true
+          }
         },
         {
           path: '/teacher',
           name: 'Teacher',
-          component: Teacher
+          component: Teacher,
+          meta: {
+            requireAuth: true
+          }
         },
         {
           path: '/teacher/:teacher_id',
           name: 'TeacherDetail',
-          component: TeacherDetail
-        },
-        {
-          path: '/setting',
-          name: 'Setting',
-          component: Setting
+          component: TeacherDetail,
+          meta: {
+            requireAuth: true
+          }
         }
       ]
     },
@@ -64,16 +76,31 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   const toTmp = to
-  if (toTmp.name === 'Login') {
-    console.log(111111111111111111111)
+  if (toTmp.meta.requireAuth) {
+    if (localStorage.getItem('duration')) {
+      var oldTimeStamp = localStorage.getItem('duration')
+      var nowTimeStamp = Date.parse(new Date())
+      if (nowTimeStamp - oldTimeStamp > 60 * 24 * 10 * 1000) {
+        next({
+          path: '/login',
+          query: {
+            redirect: to.fullPath
+          }
+        })
+      } else {
+        next()
+      }
+    } else {
+      next({
+        path: '/login',
+        query: {
+          redirect: to.fullPath
+        }
+      })
+    }
+  } else {
+    next()
   }
-  next()
-  // next({
-  //   path: '/login',
-  //   query: {
-  //     redirect: to.fullPath
-  //   }
-  // })
 })
 
 export default router
