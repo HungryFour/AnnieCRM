@@ -1,18 +1,39 @@
 <template>
   <div class="form_bg">
+    <el-dialog title="考试信息" :visible.sync="addScoresFormVisible">
+      <el-form :model="addForm">
+        <el-form-item label="考试时间" label-width="120px">
+          <el-date-picker
+            v-model="addForm.textDate"
+            type="date"
+            placeholder="选择日期"
+            style="width: 300px">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="课程" label-width="120px">
+          <el-select v-model="addForm.subject" placeholder="课程" style="width: 150px">
+            <el-option label="语文" value="yuwen"></el-option>
+            <el-option label="数学" value="shuxue"></el-option>
+            <el-option label="英语" value="yingyu"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="分数" label-width="120px">
+          <el-input v-model="addForm.score" auto-complete="off" style="width: 300px"></el-input>
+        </el-form-item>
+        <el-form-item label="班级名次" label-width="120px">
+          <el-input v-model="addForm.classRanks" auto-complete="off" style="width: 300px"></el-input>
+        </el-form-item>
+        <el-form-item label="年级名次" label-width="120px">
+          <el-input v-model="addForm.gradeRanks" auto-complete="off" style="width: 300px"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="addCancleHandle">取 消</el-button>
+        <el-button type="primary" @click="addConfirmHandle">确 定</el-button>
+      </div>
+    </el-dialog>
+
     <el-form :inline="true" :model="test_score" class="test_score_form">
-      <el-form-item label="学科" required>
-        <el-select v-model="test_score.classType" placeholder="学科">
-          <el-option label="语文" value="yuwen"></el-option>
-          <el-option label="数学" value="shuxue"></el-option>
-          <el-option label="英语" value="yingyu"></el-option>
-          <el-option label="物理" value="wuli"></el-option>
-          <el-option label="化学" value="huaxue"></el-option>
-          <el-option label="生物" value="shegnwu"></el-option>
-          <el-option label="地理" value="dili"></el-option>
-          <el-option label="政治" value="zhengzhi"></el-option>
-        </el-select>
-      </el-form-item>
       <el-form-item label="考试时间" required>
         <el-col :span="10">
           <el-date-picker type="date" placeholder="开始日期" v-model="test_score.startDate" style="width: 100%"></el-date-picker>
@@ -25,6 +46,9 @@
       <el-form-item>
         <el-button type="primary" @click="onSubmit('test_score')">查询</el-button>
       </el-form-item>
+
+      <el-button type="text" @click="addHandle" style="float: right; padding: 5px 20px"> 添加考试成绩 </el-button>
+
     </el-form>
     <el-table
       :data="tableData"
@@ -39,37 +63,75 @@
         min-width="100">
       </el-table-column>
       <el-table-column
-        prop="score"
-        label="分数"
+        prop="yuwen"
+        label="语文"
         min-width="100">
       </el-table-column>
       <el-table-column
-        prop="averageScore"
-        label="班级平均分"
+        prop="shuxue"
+        label="数学"
         min-width="100">
       </el-table-column>
       <el-table-column
-        prop="diffAverageScore"
-        label="比较班级平均分"
+        prop="yingyu"
+        label="英语"
         min-width="100">
       </el-table-column>
       <el-table-column
-        prop="diffScore"
-        label="进步分数（比较上次考试）"
+        prop="totalScore"
+        label="总分"
+        min-width="100">
+      </el-table-column>
+      <el-table-column
+        prop="classRanks"
+        label="班级名次"
+        min-width="100">
+      </el-table-column>
+      <el-table-column
+        prop="gradeRanks"
+        label="年级名次"
         min-width="100">
       </el-table-column>
     </el-table>
+
+    <el-card class="score-line-chart-box-card" style="margin-top: 40px">
+      <div>
+        <score-line-chart></score-line-chart>
+      </div>
+    </el-card>
+
+    <el-card class="ranking-line-chart-box-card" style="margin-top: 40px">
+      <div>
+        <ranking-line-chart></ranking-line-chart>
+      </div>
+    </el-card>
+
   </div>
 </template>
 
 <script>
 
+import ScoreLineChart from '@/views/ScoreLineChart'
+import RankingLineChart from '@/views/RankingLineChart'
+
 export default {
   name: 'HistoryExamination',
+  components: {
+    ScoreLineChart,
+    RankingLineChart
+  },
   data () {
     return {
+      addScoresFormVisible: false,
+      addForm: {
+        subject: '',
+        textDate: '',
+        score: '',
+        classRanks: '',
+        gradeRanks: ''
+      },
       test_score: {
-        classType: '',
+        subject: '',
         startDate: '',
         endDate: ''
       },
@@ -88,45 +150,57 @@ export default {
       tableData: [
         {
           time: '2018-09-05',
-          score: '98',
-          averageScore: '90',
-          diffAverageScore: '8',
-          diffScore: '7'
+          yuwen: '98',
+          shuxue: '88',
+          yingyu: '90',
+          totalScore: '276',
+          classRanks: '8',
+          gradeRanks: '7'
         },
         {
           time: '2018-08-01',
-          score: '91',
-          averageScore: '82',
-          diffAverageScore: '9',
-          diffScore: '3'
+          yuwen: '98',
+          shuxue: '88',
+          yingyu: '90',
+          totalScore: '276',
+          classRanks: '9',
+          gradeRanks: '3'
         },
         {
           time: '2018-07-08',
-          score: '88',
-          averageScore: '90',
-          diffAverageScore: '-2',
-          diffScore: '2'
+          yuwen: '98',
+          shuxue: '88',
+          yingyu: '90',
+          totalScore: '276',
+          classRanks: '2',
+          gradeRanks: '2'
         },
         {
           time: '2018-06-10',
-          score: '86',
-          averageScore: '84',
-          diffAverageScore: '2',
-          diffScore: '3'
+          yuwen: '98',
+          shuxue: '88',
+          yingyu: '90',
+          totalScore: '276',
+          classRanks: '2',
+          gradeRanks: '3'
         },
         {
           time: '2018-05-05',
-          score: '83',
-          averageScore: '88',
-          diffAverageScore: '-5',
-          diffScore: '1'
+          yuwen: '98',
+          shuxue: '88',
+          yingyu: '90',
+          totalScore: '276',
+          classRanks: '5',
+          gradeRanks: '1'
         },
         {
           time: '2018-04-03',
-          score: '82',
-          averageScore: '89',
-          diffAverageScore: '8',
-          diffScore: '0'
+          yuwen: '98',
+          shuxue: '88',
+          yingyu: '90',
+          totalScore: '276',
+          classRanks: '8',
+          gradeRanks: '1'
         }
       ]
     }
@@ -135,13 +209,29 @@ export default {
   //   this.initCharts()
   // },
   methods: {
-    onSubmit (formName) {
+    onSubmit () {
       this.$message({
         showClose: true,
         message: '手动滑稽 等待后台Api开发',
         type: 'warning',
         duration: 2000
       })
+    },
+    addHandle () {
+      this.addScoresFormVisible = true
+    },
+    addConfirmHandle () {
+      this.addScoresFormVisible = false
+      console.log('创建学生')
+    },
+    addCancleHandle () {
+      this.addScoresFormVisible = false
+      this.$message({
+        type: 'info',
+        message: '取消添加',
+        duration: 2000
+      })
+      console.log('取消')
     }
     // initCharts () {
     //   this.chart = echarts.init(this.$refs.chart)

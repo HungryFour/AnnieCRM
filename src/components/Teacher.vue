@@ -1,8 +1,25 @@
 <template>
 <div class="teacher-list">
+
+  <el-dialog title="教师信息" :visible.sync="addTeacherFormVisible">
+    <el-form :model="addForm">
+      <el-form-item label="姓名" label-width="120px">
+        <el-input v-model="addForm.name" auto-complete="off" style="width: 300px"></el-input>
+      </el-form-item>
+      <el-form-item label="联系电话" label-width="120px">
+        <el-input v-model="addForm.mobile" auto-complete="off" style="width: 300px" type="tel"></el-input>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="addCancleHandle">取 消</el-button>
+      <el-button type="primary" @click="addConfirmHandle">确 定</el-button>
+    </div>
+  </el-dialog>
+
   <el-card shadow="always" class="box-card">
     <div slot="header" class="clearfix">
       <span>代课老师列表</span>
+      <el-button type="text" @click="addHandle" style="float: right; padding: 5px 20px"> 添加 </el-button>
     </div>
     <div class="search-form">
       <el-form ref="form" :inline="true" :model="searchForm">
@@ -32,11 +49,6 @@
       <el-table-column
         prop="mobile"
         label="联系电话"
-        min-width="120">
-      </el-table-column>
-      <el-table-column
-        prop="courseCount"
-        label="本周课时"
         min-width="120">
       </el-table-column>
       <el-table-column
@@ -70,11 +82,32 @@ export default {
     },
     onSubmit () {
       console.log('提交')
+    },
+    addHandle () {
+      this.addTeacherFormVisible = true
+    },
+    addConfirmHandle () {
+      this.addTeacherFormVisible = false
+      console.log('创建学生')
+    },
+    addCancleHandle () {
+      this.addTeacherFormVisible = false
+      this.$message({
+        type: 'info',
+        message: '取消创建',
+        duration: 2000
+      })
+      console.log('取消')
     }
   },
   data () {
     return {
+      addTeacherFormVisible: false,
       searchForm: {
+        name: '',
+        mobile: ''
+      },
+      addForm: {
         name: '',
         mobile: ''
       },

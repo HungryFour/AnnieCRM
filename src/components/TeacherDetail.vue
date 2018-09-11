@@ -1,8 +1,44 @@
 <template>
 <div class="teacher_detail">
+
+  <el-dialog title="课程信息" :visible.sync="addSubjectFormVisible">
+    <el-form :model="addForm">
+      <el-form-item label="课程" label-width="120px">
+        <el-select v-model="addForm.subject" placeholder="课程" style="width: 150px">
+          <el-option label="语文" value="yuwen"></el-option>
+          <el-option label="数学" value="shuxue"></el-option>
+          <el-option label="英语" value="yingyu"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="开始时间" label-width="120px">
+        <el-date-picker
+          v-model="addForm.startTime"
+          type="datetime"
+          placeholder="选择日期时间"
+          default-time="18:00:00"
+          style="width: 300px">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="结束时间" label-width="120px">
+        <el-date-picker
+          v-model="addForm.endTime"
+          type="datetime"
+          placeholder="选择日期时间"
+          default-time="20:00:00"
+          style="width: 300px">
+        </el-date-picker>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="addCancleHandle">取 消</el-button>
+      <el-button type="primary" @click="addConfirmHandle">确 定</el-button>
+    </div>
+  </el-dialog>
+
 <el-card shadow="always">
   <div slot="header" class="clearfix">
     <span>排课表</span>
+    <el-button type="text" @click="addHandle" style="float: right; padding: 5px 20px"> 添加 </el-button>
   </div>
   <div class="block">
     <span class="demonstration"></span>
@@ -60,6 +96,12 @@ export default {
   name: 'TeacherDetail',
   data () {
     return {
+      addSubjectFormVisible: false,
+      addForm: {
+        subject: '',
+        startTime: '',
+        endTime: ''
+      },
       tableData: [
         {
           'subject': '语文',
@@ -162,6 +204,22 @@ export default {
         }
       })
       return sums
+    },
+    addHandle () {
+      this.addSubjectFormVisible = true
+    },
+    addConfirmHandle () {
+      this.addSubjectFormVisible = false
+      console.log('创建学生')
+    },
+    addCancleHandle () {
+      this.addSubjectFormVisible = false
+      this.$message({
+        type: 'info',
+        message: '取消创建',
+        duration: 2000
+      })
+      console.log('取消')
     }
   }
 }

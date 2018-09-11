@@ -80,7 +80,7 @@ router.beforeEach((to, from, next) => {
     if (localStorage.getItem('duration')) {
       var oldTimeStamp = localStorage.getItem('duration')
       var nowTimeStamp = Date.parse(new Date())
-      if (nowTimeStamp - oldTimeStamp > 60 * 24 * 10 * 1000) {
+      if (nowTimeStamp - oldTimeStamp > 60 * 60 * 24 * 10 * 1000) {
         next({
           path: '/login',
           query: {

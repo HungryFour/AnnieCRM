@@ -80,15 +80,9 @@ export default {
             }
           },
           indicator: [
-            {name: '语文', max: 150},
-            {name: '数学', max: 150},
-            {name: '英语', max: 150},
-            {name: '物理', max: 100},
-            {name: '化学', max: 100},
-            {name: '生物', max: 100},
-            {name: '历史', max: 100},
-            {name: '地理', max: 100},
-            {name: '政治', max: 100}
+            {name: '语文', max: 100},
+            {name: '数学', max: 100},
+            {name: '英语', max: 100}
           ]
         },
         series: [{
@@ -96,7 +90,7 @@ export default {
           type: 'radar',
           data: [
             {
-              value: [98, 100, 105, 79, 82, 83, 89, 85, 92],
+              value: [78, 80, 85],
               name: '班级历史平均成绩',
               lineStyle: {
                 color: '#E6001F'
@@ -118,7 +112,7 @@ export default {
               }
             },
             {
-              value: [132, 98, 120, 62, 69, 89, 93, 94, 99],
+              value: [96, 80.5, 97],
               name: '该学生历史平均成绩',
               lineStyle: {
                 color: '#009EF7'

@@ -1,16 +1,42 @@
 <template>
   <div class="student-list">
+
+    <el-dialog title="学生信息" :visible.sync="addStudentFormVisible">
+      <el-form :model="addForm">
+        <el-form-item label="姓名" label-width="120px">
+          <el-input v-model="addForm.name" auto-complete="off" style="width: 500px"></el-input>
+        </el-form-item>
+        <el-form-item label="性别" label-width="120px">
+          <el-select v-model="addForm.sex" placeholder="性别" style="width: 150px">
+            <el-option label="男" value="boy"></el-option>
+            <el-option label="女" value="girl"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="学校" label-width="120px">
+          <el-input v-model="addForm.school" auto-complete="off" style="width: 500px"></el-input>
+        </el-form-item>
+        <el-form-item label="家庭住址" label-width="120px">
+          <el-input v-model="addForm.address" auto-complete="off" style="width: 500px"></el-input>
+        </el-form-item>
+        <el-form-item label="家长联系电话" label-width="120px">
+          <el-input v-model="addForm.mobile" auto-complete="off" style="width: 500px"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="addCancleHandle">取 消</el-button>
+        <el-button type="primary" @click="addConfirmHandle">确 定</el-button>
+      </div>
+    </el-dialog>
+
     <el-card shadow="always" class="box-card">
       <div slot="header" class="clearfix">
         <span>学生列表</span>
+        <el-button type="text" @click="addHandle" style="float: right; padding: 5px 20px"> 添加 </el-button>
       </div>
       <div class="search-form">
         <el-form ref="form" :inline="true" :model="searchForm">
           <el-form-item label="姓名">
           <el-input v-model="searchForm.name"></el-input>
-          </el-form-item>
-          <el-form-item label="性别">
-          <el-input v-model="searchForm.sex"></el-input>
           </el-form-item>
           <el-form-item label="家长手机号">
           <el-input v-model="searchForm.mobile"></el-input>
@@ -78,14 +104,38 @@ export default {
     },
     onSubmit () {
       console.log('提交')
+    },
+    addHandle () {
+      this.addStudentFormVisible = true
+    },
+    addConfirmHandle () {
+      this.addStudentFormVisible = false
+      console.log('创建学生')
+    },
+    addCancleHandle () {
+      this.addStudentFormVisible = false
+      this.$message({
+        type: 'info',
+        message: '取消创建',
+        duration: 2000
+      })
+      console.log('取消')
     }
   },
   data () {
     return {
+      formLabelWidth: '120px',
+      addStudentFormVisible: false,
       searchForm: {
         name: '',
-        sex: '',
         mobile: ''
+      },
+      addForm: {
+        name: '',
+        sex: '',
+        mobile: '',
+        school: '',
+        address: ''
       },
       tableData: [{
         name: '郭嘉芮',

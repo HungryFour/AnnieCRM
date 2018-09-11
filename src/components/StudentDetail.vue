@@ -17,9 +17,9 @@
           <el-tab-pane label="已报课程" name="third">
             <sign-subject></sign-subject>
           </el-tab-pane>
-          <el-tab-pane label="充值历史" name="fourth">
-            <recharge></recharge>
-          </el-tab-pane>
+          <!--<el-tab-pane label="充值历史" name="fourth">-->
+            <!--<recharge></recharge>-->
+          <!--</el-tab-pane>-->
         </el-tabs>
       </div>
     </el-card>
